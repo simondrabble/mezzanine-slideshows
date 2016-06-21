@@ -12,6 +12,31 @@ class Slideshow(models.Model):
     slideshow_description = models.TextField(max_length=100, blank=True,
                                              help_text="A fuller description of the slideshow")
 
+    # These fields have the same meaning as at
+    # http://www.owlgraphic.com/owlcarousel/index.html#customizing
+    slide_speed = models.IntegerField(
+            default=500, null=False, blank=False,
+            help_text="When autoplaying, display with this delay (ms) between slides")
+    pagination_speed = models.IntegerField(
+            default=1200, null=False, blank=False,
+            help_text="Pagination speed")
+    autoplay = models.BooleanField(default=True,
+                                   help_text="Autoplay slideshow")
+    mousedrag = models.BooleanField(default=False,
+                                    help_text="Allow mouse dragging")
+    pagination = models.BooleanField(default=False,
+                                     help_text="Show pagination")
+    navigation = models.BooleanField(default=True,
+                                     help_text="Show navigation")
+    scroll_per_page = models.BooleanField(default=False,
+                                          help_text="Scroll per page (not per item)")
+    items = models.SmallIntegerField(default=3,
+                                     blank=False,
+                                     null=False,
+                                     help_text="Display this many items at a time")
+    lazy_load = models.BooleanField(default=False,
+                                    help_text="Lazy load images")
+
     class Meta:
         verbose_name = "Slideshow"
         verbose_name_plural = "Slideshows"
