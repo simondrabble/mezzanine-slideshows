@@ -5,14 +5,18 @@
         {% with slideshow.gallery as gallery %}
             {% with gallery.images.all as images %}
             <div class="home-gallery row">
-                <div class="col-md-12">
+                <div class="col-md-12 slideshow">
                     <h3>{{ slideshow.slideshow_title }}</h3>
                     <p>{{ slideshow.slideshow_description }}</p>
                     <div id="owl-homepage" class="owl-carousel">
                         {% for image in images %}
                         <div>
                             <a class="mezzanine-slideshows-popup" rel="#image-{{ image.id }}" title="{{ image.description }}" href="{{ image.file.url }}">
+                            {% if slideshow.lazy_load %}
+                            <img class="img-responsive thumbnail lazyOwl" data-src="{{ MEDIA_URL }}{% thumbnail image.file 320 200 %}">
+                            {% else %}
                             <img class="img-responsive thumbnail" src="{{ MEDIA_URL }}{% thumbnail image.file 320 200 %}">
+                            {% endif %}
                             </a>
                         </div>
                         {% endfor %}
@@ -23,14 +27,15 @@
             <script>
                 $(document).ready(function() {
                     $("#owl-homepage").owlCarousel({
-                        slideSpeed : 500,
-                        paginationSpeed: 1200,
-                        autoPlay: true,
-                        mouseDrag: false,
-                        pagination: false,
-                        items: 4,
-                        navigation: true,
-                        scrollPerPage: false
+                        slideSpeed : {{ slideshow.slide_speed }},
+                        paginationSpeed: {{ slideshow.pagination_speed }},
+                        autoPlay: {% if slideshow.autoplay %}true{% else %}false{% endif %},
+                        mouseDrag: {% if slideshow.mousedrag %}true{% else %}false{% endif %},
+                        pagination: {% if slideshow.pagination %}true{% else %}false{% endif %},
+                        items: {{ slideshow.items }},
+                        navigation: {% if slideshow.navigation %}true{% else %}false{% endif %},
+                        scrollPerPage: {% if slideshow.scroll_per_page %}true{% else %}false{% endif %},
+                        lazyLoad: {% if slideshow.lazy_load %}true{% else %}false{% endif %}
                     });
                 });
                 $(document).ready(function() {
