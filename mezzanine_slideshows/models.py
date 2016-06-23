@@ -1,10 +1,19 @@
 from django.db import models
 
+from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from mezzanine.pages.models import RichTextPage
 from mezzanine.galleries.models import Gallery
 
 
+class SlideshowManager(models.Manager):
+
+    def published(self):
+        return self.filter(gallery__status=CONTENT_STATUS_PUBLISHED)
+
+
 class Slideshow(models.Model):
+    objects = SlideshowManager()
+
     page = models.OneToOneField(RichTextPage)
     gallery = models.ForeignKey(Gallery)
     slideshow_title = models.CharField(max_length=30, blank=True,
